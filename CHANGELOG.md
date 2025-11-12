@@ -4,22 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.4] - 2025-11-12
 
-### 🎨 界面大幅增强 + GUI 回归
+### 🎨 界面重新设计 + GUI 回归
 
-**界面增强（增强版）**：
-- ✨ **文件详情展示** - 显示文件大小、格式、类型等详细信息
-- 📊 **统计面板** - 实时显示文件数量、总大小、平均大小
-- 🎛️ **批量操作** - 全选、清空、删除选中等批量管理功能
-- ⌨️ **快捷键支持** - Ctrl+O 打开、Ctrl+A 全选、Delete 删除、Ctrl+R 处理
-- 🎨 **视觉反馈增强** - 拖拽高亮、悬停效果、状态提示
-- 📂 **文件选择按钮** - 支持按钮和拖拽两种方式
+**界面设计优化**：
+- ✨ **紧凑布局** - 参考 CustomTkinter 设计，优化空间利用率
+- 🎨 **统一配色** - 柔和的深色主题（#1a1a1a / #2a2a2a / #4CAF50）
+- 📐 **专业优雅** - 1000x700 窗口，等比例左右分栏
+- 🎯 **简洁卡片** - 统一的 ModernCard 组件，圆角阴影
+- ⌨️ **快捷键支持** - Ctrl+O 打开、Delete 删除、Ctrl+R 处理
+- 🖱️ **拖拽支持** - 直接拖拽视频文件到窗口
 - 💬 **完成提示** - 处理完成后弹窗通知
-- 🔍 **更大的窗口** - 1400x900 提供更好的视野
+- 🎨 **视觉统一** - 所有组件风格一致，配色协调
 
 **GUI 变更**：
 - ✅ 回到 PyQt6 现代化界面（Material Design 风格）
 - ❌ 移除 CustomTkinter（Linux 显示问题）
-- ✅ 保持专业的用户体验
+- ✅ 保持专业优雅的用户体验
+- ✅ 更高的空间利用率和美观度
 
 **体积优化**（通过 PyInstaller + UPX）：
 - ✅ 安装 UPX 压缩工具
@@ -33,11 +34,12 @@ All notable changes to this project will be documented in this file.
 - Linux: 181MB (DEB) / 183MB (AppImage)
 
 ### Technical Details
-- 自定义 FileListItem 组件显示丰富信息
-- StatsCard 组件实时统计
-- QShortcut 实现快捷键
+- 统一的 ModernCard 卡片组件（8px 圆角，1px 边框）
+- QShortcut 实现快捷键（Ctrl+O、Delete、Ctrl+R）
 - QMessageBox 用户确认和提示
-- ExtendedSelection 支持多选操作
+- ExtendedSelection 支持多选删除
+- 紧凑的栅格布局（GridLayout）优化空间
+- 左右等比例分栏设计（1:1 权重）
 
 ## [0.2.3] - 2025-11-12
 

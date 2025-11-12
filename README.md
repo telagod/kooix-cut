@@ -172,12 +172,12 @@ Made with ❤️ by KOOI
 - [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/KOOI-Cut.dmg) - PyQt6 优化版
 - [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/kooix-cut_0.2.4.deb) - PyQt6 优化版
 
-**v0.2.4 更新：界面大幅增强 + PyQt6 优化** 🎨
-- ✨ **文件详情展示** - 显示大小、格式等信息
-- 📊 **统计面板** - 实时显示文件统计
-- 🎛️ **批量操作** - 全选、清空、删除选中
-- ⌨️ **快捷键支持** - Ctrl+O 打开、Ctrl+A 全选、Delete 删除、Ctrl+R 处理
-- 🎨 **视觉反馈增强** - 拖拽高亮、悬停效果
+**v0.2.4 更新：界面重新设计 + PyQt6 优化** 🎨
+- ✨ **紧凑布局** - 参考 CustomTkinter 设计，优化空间利用率
+- 🎨 **统一配色** - 柔和的深色主题（#1a1a1a / #2a2a2a / #4CAF50）
+- 📐 **专业优雅** - 1000x700 窗口，等比例左右分栏
+- ⌨️ **快捷键支持** - Ctrl+O 打开、Delete 删除、Ctrl+R 处理
+- 🖱️ **拖拽支持** - 直接拖拽视频文件到窗口
 - ✅ 回到 PyQt6 现代化界面（Material Design 风格）
 - ✅ UPX 压缩 + 模块排除优化
 - ✅ 保持所有 AI 增强功能
