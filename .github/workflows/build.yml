@@ -30,6 +30,7 @@ jobs:
           choco install upx -y
 
       - name: Build Windows executable
+        shell: cmd
         run: |
           pyinstaller --name="KOOI-Cut" --windowed --onefile ^
             --icon=assets/icon.ico ^
