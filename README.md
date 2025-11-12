@@ -113,11 +113,13 @@ process_videos(
 
 ## 开发路线图 (Roadmap)
 
-### v0.2.0 - AI 增强 (计划中)
-- [ ] **语音活动检测 (VAD)** - 训练轻量级模型检测真实说话
-- [ ] **场景分割** - 基于视觉特征的智能场景切换检测
-- [ ] **人脸检测** - 保留有人出镜的片段
-- [ ] **关键帧提取** - 智能识别重要画面
+### v0.2.0 - AI 增强 ✅ 已发布
+- [x] **语音活动检测 (VAD)** - 使用 Silero VAD 模型检测真实说话
+- [x] **场景分割** - 基于直方图差异的智能场景切换检测
+- [x] **人脸检测** - 使用 OpenCV Haar Cascade 保留有人出镜的片段
+- [x] **关键帧提取** - 基于运动强度智能识别重要画面
+- [x] **现代化界面** - Material Design 风格的卡片式布局
+- [x] **跨平台打包** - Windows/macOS/Linux 预编译版本
 
 ### v0.3.0 - 内容增强 (计划中)
 - [ ] **自动字幕生成** - 集成 Whisper 语音识别
@@ -158,15 +160,23 @@ process_videos(
 Made with ❤️ by KOOI
 
 **当前版本**: v0.2.0
-**最后更新**: 2025-11-11
+**最后更新**: 2025-11-12
 
 ## 下载
 
 ### 预编译版本
-- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/latest/download/KOOI-Cut.exe)
-- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/latest/download/KOOI-Cut.dmg)
-- [Linux AppImage](https://github.com/telagod/kooix-cut/releases/latest/download/KOOI-Cut.AppImage)
-- [Linux DEB](https://github.com/telagod/kooix-cut/releases/latest/download/kooix-cut_0.2.0.deb)
+从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
+
+- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.0/KOOI-Cut.exe) - 239 MB
+- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.0/KOOI-Cut.dmg) - 183 MB
+- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.0/kooix-cut_0.2.0.deb) - 321 MB
+
+**Linux DEB 安装方法：**
+```bash
+sudo dpkg -i kooix-cut_0.2.0.deb
+sudo apt-get install -f  # 安装依赖
+kooix-cut  # 运行
+```
 
 ### 本地构建
 ```bash
