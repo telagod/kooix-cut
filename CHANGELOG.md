@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.3] - 2025-11-12
+
+### 🐛 重要修复 - 修复无法启动问题
+
+**问题**：
+- v0.2.2 打包后的程序无法启动
+- 报错：`importlib.metadata.PackageNotFoundError: No package metadata was found for imageio`
+
+**原因**：
+- PyInstaller 默认不包含 Python 包的元数据
+- moviepy 依赖的 imageio 在运行时需要读取版本信息
+
+**修复**：
+- ✅ 添加 `--copy-metadata imageio` 到所有平台的 PyInstaller 命令
+- ✅ 添加 `--copy-metadata moviepy` 确保完整依赖
+- ✅ 添加 `--copy-metadata numpy` 预防类似问题
+- ✅ 修复 GitHub Actions 自动 release 的权限问题
+- ✅ 修复 AppImage 文件名匹配问题
+
+**适用平台**：
+- Windows, macOS, Linux 全平台修复
+
+### Technical Details
+- PyInstaller 增加元数据复制选项
+- 确保所有依赖包的版本信息可在运行时访问
+
 ## [0.2.2] - 2025-11-12
 
 ### 🎯 超轻量优化 - 再减 20-25%！

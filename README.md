@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-0.2.2-green.svg)
+![Version](https://img.shields.io/badge/version-0.2.3-green.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -159,7 +159,7 @@ process_videos(
 
 Made with ❤️ by KOOI
 
-**当前版本**: v0.2.2
+**当前版本**: v0.2.3
 **最后更新**: 2025-11-12
 
 ## 下载
@@ -167,9 +167,14 @@ Made with ❤️ by KOOI
 ### 预编译版本
 从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
 
-- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/KOOI-Cut.exe) - 超轻量版
-- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/KOOI-Cut.dmg) - 超轻量版
-- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/kooix-cut_0.2.2.deb) - 超轻量版
+- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.3/KOOI-Cut.exe) - 超轻量版
+- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.3/KOOI-Cut.dmg) - 超轻量版
+- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.3/kooix-cut_0.2.3.deb) - 超轻量版
+
+**v0.2.3 更新：修复无法启动问题** 🐛
+- ✅ 修复 PyInstaller 打包缺少元数据导致的启动失败
+- ✅ 解决 `importlib.metadata.PackageNotFoundError` 错误
+- ✅ 全平台 (Windows/macOS/Linux) 均已修复
 
 **v0.2.2 更新：再减小 20-25%！使用 Tkinter 替代 PyQt6**
 - ✅ 使用 Python 标准库 Tkinter（无需额外依赖）
@@ -183,7 +188,7 @@ Made with ❤️ by KOOI
 
 **Linux DEB 安装方法：**
 ```bash
-sudo dpkg -i kooix-cut_0.2.2.deb
+sudo dpkg -i kooix-cut_0.2.3.deb
 sudo apt-get install -f  # 安装依赖
 kooix-cut  # 运行
 ```
