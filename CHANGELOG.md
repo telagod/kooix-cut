@@ -4,20 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.2] - 2025-11-12
 
-### 🎯 超轻量优化 - 再减 70%！
+### 🎯 超轻量优化 - 再减 20-25%！
 - **使用 Tkinter 替代 PyQt6**
   - 移除 PyQt6 (256MB) GUI 框架
   - 使用 Python 标准库 Tkinter
-  - Windows: 124MB → **~35MB** (再减 72%)
-  - macOS: 94MB → **~25MB** (再减 73%)
-  - Linux: 182MB → **~50MB** (再减 73%)
+  - Windows: 124MB → **96MB** (再减 23%)
+  - macOS: 94MB → **74MB** (再减 21%)
+  - Linux: 182MB → **137MB** (再减 25%)
 
 ### 总体积优化成果
-- **从 v0.2.0 到 v0.2.2**: 239MB → **35MB**
-- **总减少**: **85%**！
+- **从 v0.2.0 到 v0.2.2**: 239MB → **96MB**
+- **总减少**: **60%**！
 - **优化历程**:
-  - v0.2.0 → v0.2.1: 移除 PyTorch (-1.7GB)
-  - v0.2.1 → v0.2.2: 移除 PyQt6 (-256MB)
+  - v0.2.0 → v0.2.1: 移除 PyTorch (-1.7GB，减少 45-50%)
+  - v0.2.1 → v0.2.2: 移除 PyQt6 (-256MB，再减 20-25%)
 
 ### Changed
 - 🎨 **全新 Tkinter 界面** - 保持现代设计风格

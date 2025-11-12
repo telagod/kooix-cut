@@ -171,15 +171,15 @@ Made with ❤️ by KOOI
 - [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/KOOI-Cut.dmg) - 超轻量版
 - [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/kooix-cut_0.2.2.deb) - 超轻量版
 
-**v0.2.2 更新：再减小 70%！使用 Tkinter 替代 PyQt6**
+**v0.2.2 更新：再减小 20-25%！使用 Tkinter 替代 PyQt6**
 - ✅ 使用 Python 标准库 Tkinter（无需额外依赖）
-- ✅ Windows: **~35MB** (从 124MB → 35MB, 再减 72%)
-- ✅ macOS: **~25MB** (从 94MB → 25MB, 再减 73%)
-- ✅ Linux: **~50MB** (从 182MB → 50MB, 再减 73%)
+- ✅ Windows: **96MB** (从 124MB → 96MB, 再减 23%)
+- ✅ macOS: **74MB** (从 94MB → 74MB, 再减 21%)
+- ✅ Linux: **137MB** (从 182MB → 137MB, 再减 25%)
 
 **总体积优化：**
-- 📊 从 v0.2.0 (239MB) → v0.2.2 (35MB)
-- 🎯 **减少 85%！**
+- 📊 从 v0.2.0 (239MB) → v0.2.2 (96MB)
+- 🎯 **减少 60%！**
 
 **Linux DEB 安装方法：**
 ```bash
@@ -201,15 +201,15 @@ scripts\build_local.bat
 
 ### 🎯 超轻量优化 (v0.2.2)
 - **Tkinter 界面** - 使用 Python 标准库，无需额外 GUI 框架
-- **体积再减 70%** - 从 v0.2.1 的 94-182MB 减到 25-50MB
+- **体积再减 20-25%** - 从 v0.2.1 的 94-182MB 减到 74-137MB
 - **零外部 GUI 依赖** - PyQt6 (256MB) 已移除
 - **启动更快** - 原生标准库，加载速度更快
 - **跨平台兼容** - Python 自带 Tkinter，无需额外安装
 
 ### 🎯 体积优化历程
 - **v0.2.0** → **v0.2.1**: 移除 PyTorch (1.7GB)，减少 45-50%
-- **v0.2.1** → **v0.2.2**: 移除 PyQt6 (256MB)，再减 70%
-- **总优化**: 从 239MB → **35MB**，减少 **85%**！
+- **v0.2.1** → **v0.2.2**: 移除 PyQt6 (256MB)，再减 20-25%
+- **总优化**: 从 239MB → **96MB**，减少 **60%**！
 
 ### AI 增强检测 (v0.2.0)
 - **语音活动检测 (VAD)** - 使用 WebRTC VAD，精确检测真实说话
