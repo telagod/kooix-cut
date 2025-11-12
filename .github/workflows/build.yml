@@ -1,0 +1,145 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build Windows executable
+        run: |
+          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.ico --add-data="assets;assets" modern_gui.py
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KOOI-Cut-Windows
+          path: dist/KOOI-Cut.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build macOS app
+        run: |
+          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.icns --add-data="assets:assets" modern_gui.py
+
+      - name: Create DMG
+        run: |
+          brew install create-dmg
+          create-dmg --volname "KOOI Cut" --window-pos 200 120 --window-size 800 400 --icon-size 100 --app-drop-link 600 185 "KOOI-Cut.dmg" "dist/KOOI-Cut.app"
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KOOI-Cut-macOS
+          path: KOOI-Cut.dmg
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pyqt6 dpkg-dev fakeroot
+          pip install pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build Linux executable
+        run: |
+          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" modern_gui.py
+
+      - name: Create AppImage
+        run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+          ./linuxdeploy-x86_64.AppImage --appdir AppDir --executable dist/KOOI-Cut --desktop-file assets/kooix-cut.desktop --icon-file assets/icon.png --output appimage
+
+      - name: Build DEB package
+        run: |
+          mkdir -p kooix-cut_0.2.0/DEBIAN
+          mkdir -p kooix-cut_0.2.0/usr/bin
+          mkdir -p kooix-cut_0.2.0/usr/share/applications
+          mkdir -p kooix-cut_0.2.0/usr/share/icons/hicolor/512x512/apps
+
+          cp dist/KOOI-Cut kooix-cut_0.2.0/usr/bin/
+          cp assets/kooix-cut.desktop kooix-cut_0.2.0/usr/share/applications/
+          cp assets/icon.png kooix-cut_0.2.0/usr/share/icons/hicolor/512x512/apps/kooix-cut.png
+
+          cat > kooix-cut_0.2.0/DEBIAN/control << EOF
+          Package: kooix-cut
+          Version: 0.2.0
+          Section: video
+          Priority: optional
+          Architecture: amd64
+          Depends: python3, python3-pyqt6
+          Maintainer: KOOI <kooi@example.com>
+          Description: 智能视频剪辑预处理工具
+           自动合并视频并删除静音片段，支持 AI 增强检测。
+          EOF
+
+          chmod 755 kooix-cut_0.2.0/usr/bin/KOOI-Cut
+          dpkg-deb --build kooix-cut_0.2.0
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: KOOI-Cut-Linux
+          path: |
+            KOOI-Cut*.AppImage
+            kooix-cut_0.2.0.deb
+
+  release:
+    needs: [build-windows, build-macos, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            KOOI-Cut-Windows/KOOI-Cut.exe
+            KOOI-Cut-macOS/KOOI-Cut.dmg
+            KOOI-Cut-Linux/KOOI-Cut*.AppImage
+            KOOI-Cut-Linux/kooix-cut_0.2.0.deb
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

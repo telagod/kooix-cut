@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=KOOI Cut
+Comment=智能视频剪辑预处理工具
+Exec=KOOI-Cut
+Icon=kooix-cut
+Terminal=false
+Categories=AudioVideo;Video;
+Keywords=video;editing;cut;ai;
