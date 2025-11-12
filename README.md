@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-0.2.4-green.svg)
+![Version](https://img.shields.io/badge/version-0.2.5-green.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -10,7 +10,7 @@
 
 自动合并视频 · 删除静音片段 · AI 增强检测
 
-[功能特性](#功能特性) · [快速开始](#快速开始) · [使用指南](#使用指南) · [开发路线](#开发路线图)
+[功能特性](#功能特性) · [快速开始](#快速开始) · [下载](#下载)
 
 </div>
 
@@ -18,17 +18,36 @@
 
 ## 功能特性
 
-- 🎬 **拖拽操作** - 直接拖拽 .mp4 文件到窗口
+### 核心功能
+- 🎬 **智能剪辑** - 自动识别并删除无音频和长段背景音片段
 - 🚀 **并行处理** - 多线程同时处理多个视频，速度提升 2-4 倍
 - ⚡ **GPU 加速** - 自动检测 NVIDIA GPU，编码速度提升 5-10 倍
-- 🎯 **智能检测** - 自动识别并删除无音频和长段背景音片段
+- 🎯 **拖拽操作** - 直接拖拽视频文件到窗口即可开始处理
 - ⚙️ **参数可调** - 静音阈值、最小时长、输出路径均可自定义
+
+### AI 增强功能
+- 🤖 **语音活动检测 (VAD)** - 使用 WebRTC VAD 精确检测真实说话
+- 🎞️ **场景分割** - 基于直方图差异智能识别场景切换
+- 👤 **人脸检测** - 使用 OpenCV 保留有人出镜的片段
+- 🔍 **关键帧提取** - 基于运动强度识别重要画面
+
+### 用户体验
+- 🌐 **中英文界面** - 一键切换中英文（Ctrl+L）
 - 📊 **实时进度** - 进度条和状态显示，处理过程一目了然
-- ✨ **增强界面** - 文件详情、统计面板、批量操作、快捷键支持
+- ⌨️ **快捷键支持** - Ctrl+O 打开、Delete 删除、Ctrl+R 处理
+- 🎨 **现代化界面** - 深灰色专业主题，Material Design 风格
 
 ## 快速开始
 
-### 安装
+### 下载预编译版本
+
+从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
+
+- **Windows** - [KOOI-Cut.exe](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/KOOI-Cut.exe)
+- **macOS** - [KOOI-Cut.dmg](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/KOOI-Cut.dmg)
+- **Linux** - [kooix-cut.deb](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/kooix-cut_0.2.5.deb)
+
+### 源码安装
 
 ```bash
 # 克隆仓库
@@ -40,31 +59,42 @@ uv sync
 
 # 或使用 pip
 pip install -e .
+
+# 运行程序
+uv run modern_gui.py
+# 或
+kooix-cut
 ```
 
-### 运行
+### Linux DEB 安装
 
 ```bash
-# 现代化界面（推荐）
-uv run modern_gui.py
-
-# 经典界面
-uv run gui.py
-
-# 或安装后直接运行
-kooix-cut
+sudo dpkg -i kooix-cut_0.2.5.deb
+sudo apt-get install -f  # 安装依赖
+kooix-cut  # 运行
 ```
 
 ## 使用方法
 
-1. 启动程序
-2. 拖拽 `.mp4` 视频文件到窗口
-3. 调整参数（可选）：
+1. **启动程序** - 双击运行或命令行启动
+2. **添加视频** - 拖拽 `.mp4` 视频文件到窗口，或点击"选择文件"
+3. **调整参数**（可选）：
+   - 点击右上角"设置"按钮
    - **静音阈值** (0.001-1.0)：默认 0.01，调高删除更少，调低删除更多
    - **最小时长** (0.5-60秒)：默认 3.0秒，只保留大于此时长的片段
-   - **输出文件**：自动设置为 `cut-原文件名.mp4`，可手动修改
-4. 点击"开始处理"按钮
-5. 等待处理完成
+   - **AI 增强**：可选启用 VAD、场景分割、人脸检测
+4. **开始处理** - 点击"开始处理"按钮（或按 Ctrl+R）
+5. **等待完成** - 查看进度条，处理完成后会弹窗提示
+
+## 快捷键
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+O` | 打开文件 |
+| `Delete` | 删除选中文件 |
+| `Ctrl+R` | 开始处理 |
+| `Ctrl+,` | 打开设置 |
+| `Ctrl+L` | 切换中英文 |
 
 ## 工作原理
 
@@ -76,16 +106,27 @@ kooix-cut
 
 ## 性能优化
 
-- **并行处理**：最多 4 个线程同时处理视频
-- **GPU 加速**：自动检测 NVIDIA GPU 并使用 `h264_nvenc` 编码器
-- **多线程编码**：充分利用所有 CPU 核心
-- **快速预设**：使用优化的编码预设
+- **并行处理** - 最多 4 个线程同时处理视频
+- **GPU 加速** - 自动检测 NVIDIA GPU 并使用 `h264_nvenc` 编码器
+- **多线程编码** - 充分利用所有 CPU 核心
+- **快速预设** - 使用优化的编码预设
+
+## 技术栈
+
+- **GUI**: PyQt6 (Material Design 风格)
+- **视频处理**: MoviePy
+- **音频分析**: NumPy (向量化计算)
+- **AI 增强**: WebRTC VAD, OpenCV Haar Cascade
+- **并行处理**: ThreadPoolExecutor
+- **GPU 编码**: NVENC (自动检测)
 
 ## 依赖
 
 - Python >= 3.10
 - moviepy >= 1.0.3
 - numpy >= 1.24.0
+- opencv-python >= 4.8.0
+- webrtcvad >= 2.0.10
 - PyQt6 >= 6.6.0
 
 ## 命令行模式
@@ -103,48 +144,25 @@ process_videos(
 )
 ```
 
-## 技术栈
+## 开发路线图
 
-- **GUI**: PyQt6
-- **视频处理**: MoviePy
-- **音频分析**: NumPy (向量化计算)
-- **视频分析**: 十字采样法 (可选)
-- **并行处理**: ThreadPoolExecutor
-- **GPU 编码**: NVENC (自动检测)
-
-## 开发路线图 (Roadmap)
-
-### v0.2.0 - AI 增强 ✅ 已发布
-- [x] **语音活动检测 (VAD)** - 使用 Silero VAD 模型检测真实说话
-- [x] **场景分割** - 基于直方图差异的智能场景切换检测
-- [x] **人脸检测** - 使用 OpenCV Haar Cascade 保留有人出镜的片段
-- [x] **关键帧提取** - 基于运动强度智能识别重要画面
-- [x] **现代化界面** - Material Design 风格的卡片式布局
-- [x] **跨平台打包** - Windows/macOS/Linux 预编译版本
-
-### v0.3.0 - 内容增强 (计划中)
+### v0.3.0 - 内容增强（计划中）
 - [ ] **自动字幕生成** - 集成 Whisper 语音识别
 - [ ] **字幕翻译** - 多语言字幕支持
 - [ ] **自动配音** - TTS 文字转语音
 - [ ] **背景音乐** - 智能添加背景音乐
 
-### v0.4.0 - 高级编辑 (计划中)
+### v0.4.0 - 高级编辑（计划中）
 - [ ] **转场效果** - 片段间自动添加转场
 - [ ] **画面稳定** - 视频防抖处理
 - [ ] **色彩校正** - 自动调色和滤镜
 - [ ] **水印添加** - 批量添加 Logo/水印
 
-### v0.5.0 - 智能优化 (计划中)
+### v0.5.0 - 智能优化（计划中）
 - [ ] **内容理解** - 基于 CLIP 的语义分析
-- [ **智能剪辑** - 根据内容自动生成精彩片段
+- [ ] **智能剪辑** - 根据内容自动生成精彩片段
 - [ ] **多平台适配** - 自动适配不同平台尺寸
 - [ ] **批量处理** - 任务队列和批量导出
-
-### v1.0.0 - 生产就绪 (计划中)
-- [ ] **插件系统** - 支持自定义插件扩展
-- [ ] **云端处理** - 可选的云端加速
-- [ ] **团队协作** - 项目共享和版本管理
-- [ ] **完整文档** - API 文档和开发指南
 
 ## 贡献指南
 
@@ -156,80 +174,13 @@ process_videos(
 3. **用户体验** - 更友好的界面
 4. **跨平台** - Windows/macOS/Linux 支持
 
+## 许可证
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
 ---
 
 Made with ❤️ by KOOI
 
-**当前版本**: v0.2.4
+**当前版本**: v0.2.5
 **最后更新**: 2025-11-12
-
-## 下载
-
-### 预编译版本
-从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
-
-- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/KOOI-Cut.exe) - PyQt6 优化版
-- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/KOOI-Cut.dmg) - PyQt6 优化版
-- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/kooix-cut_0.2.4.deb) - PyQt6 优化版
-
-**v0.2.4 更新：界面重新设计 + PyQt6 优化** 🎨
-- ✨ **紧凑布局** - 参考 CustomTkinter 设计，优化空间利用率
-- 🎨 **统一配色** - 柔和的深色主题（#1a1a1a / #2a2a2a / #4CAF50）
-- 📐 **专业优雅** - 1000x700 窗口，等比例左右分栏
-- ⌨️ **快捷键支持** - Ctrl+O 打开、Delete 删除、Ctrl+R 处理
-- 🖱️ **拖拽支持** - 直接拖拽视频文件到窗口
-- ✅ 回到 PyQt6 现代化界面（Material Design 风格）
-- ✅ UPX 压缩 + 模块排除优化
-- ✅ 保持所有 AI 增强功能
-
-**v0.2.2 更新：再减小 20-25%！使用 Tkinter 替代 PyQt6**
-- ✅ 使用 Python 标准库 Tkinter（无需额外依赖）
-- ✅ Windows: **96MB** (从 124MB → 96MB, 再减 23%)
-- ✅ macOS: **74MB** (从 94MB → 74MB, 再减 21%)
-- ✅ Linux: **137MB** (从 182MB → 137MB, 再减 25%)
-
-**总体积优化：**
-- 📊 从 v0.2.0 (239MB) → v0.2.2 (96MB)
-- 🎯 **减少 60%！**
-
-**Linux DEB 安装方法：**
-```bash
-sudo dpkg -i kooix-cut_0.2.4.deb
-sudo apt-get install -f  # 安装依赖
-kooix-cut  # 运行
-```
-
-### 本地构建
-```bash
-# Linux/macOS
-./scripts/build_local.sh
-
-# Windows
-scripts\build_local.bat
-```
-
-## 新功能
-
-### 🎯 超轻量优化 (v0.2.2)
-- **Tkinter 界面** - 使用 Python 标准库，无需额外 GUI 框架
-- **体积再减 20-25%** - 从 v0.2.1 的 94-182MB 减到 74-137MB
-- **零外部 GUI 依赖** - PyQt6 (256MB) 已移除
-- **启动更快** - 原生标准库，加载速度更快
-- **跨平台兼容** - Python 自带 Tkinter，无需额外安装
-
-### 🎯 体积优化历程
-- **v0.2.0** → **v0.2.1**: 移除 PyTorch (1.7GB)，减少 45-50%
-- **v0.2.1** → **v0.2.2**: 移除 PyQt6 (256MB)，再减 20-25%
-- **总优化**: 从 239MB → **96MB**，减少 **60%**！
-
-### AI 增强检测 (v0.2.0)
-- **语音活动检测 (VAD)** - 使用 WebRTC VAD，精确检测真实说话
-- **场景分割** - 基于直方图差异，智能识别场景切换
-- **人脸检测** - OpenCV Haar Cascade，保留有人出镜的片段
-- **关键帧提取** - 基于运动强度，识别重要画面
-
-### 使用方法
-在界面中启用相应功能：
-- VAD 检测：轻量级 WebRTC 实现，无需额外下载
-- 场景分割：无需额外依赖
-- 人脸检测：需要 OpenCV（自动安装）

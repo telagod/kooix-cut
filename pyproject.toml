@@ -1,6 +1,6 @@
 [project]
 name = "kooix-cut"
-version = "0.2.4"
+version = "0.2.5"
 description = "视频剪辑预处理工具 - 自动合并和删除静音片段"
 requires-python = ">=3.10"
 dependencies = [
