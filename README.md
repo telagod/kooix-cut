@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-0.2.1-green.svg)
+![Version](https://img.shields.io/badge/version-0.2.2-green.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -159,7 +159,7 @@ process_videos(
 
 Made with ❤️ by KOOI
 
-**当前版本**: v0.2.1
+**当前版本**: v0.2.2
 **最后更新**: 2025-11-12
 
 ## 下载
@@ -167,19 +167,23 @@ Made with ❤️ by KOOI
 ### 预编译版本
 从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
 
-- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.1/KOOI-Cut.exe) - 轻量优化版
-- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.1/KOOI-Cut.dmg) - 轻量优化版
-- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.1/kooix-cut_0.2.1.deb) - 轻量优化版
+- [Windows (.exe)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/KOOI-Cut.exe) - 超轻量版
+- [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/KOOI-Cut.dmg) - 超轻量版
+- [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.2/kooix-cut_0.2.2.deb) - 超轻量版
 
-**v0.2.1 更新：体积大幅减小 75%！**
-- ✅ 使用 WebRTC VAD 替代 PyTorch (减少 1.7GB)
-- ✅ Windows: ~60MB (原 239MB)
-- ✅ macOS: ~50MB (原 183MB)
-- ✅ Linux: ~80MB (原 321MB)
+**v0.2.2 更新：再减小 70%！使用 Tkinter 替代 PyQt6**
+- ✅ 使用 Python 标准库 Tkinter（无需额外依赖）
+- ✅ Windows: **~35MB** (从 124MB → 35MB, 再减 72%)
+- ✅ macOS: **~25MB** (从 94MB → 25MB, 再减 73%)
+- ✅ Linux: **~50MB** (从 182MB → 50MB, 再减 73%)
+
+**总体积优化：**
+- 📊 从 v0.2.0 (239MB) → v0.2.2 (35MB)
+- 🎯 **减少 85%！**
 
 **Linux DEB 安装方法：**
 ```bash
-sudo dpkg -i kooix-cut_0.2.1.deb
+sudo dpkg -i kooix-cut_0.2.2.deb
 sudo apt-get install -f  # 安装依赖
 kooix-cut  # 运行
 ```
@@ -193,12 +197,19 @@ kooix-cut  # 运行
 scripts\build_local.bat
 ```
 
-## 新功能 (v0.2.1)
+## 新功能
 
-### 🎯 体积优化 (v0.2.1)
-- **轻量化VAD** - 使用 WebRTC VAD 替代 PyTorch，体积减少 **75%**
-- **更快启动** - 无需加载深度学习框架
-- **相同精度** - 对视频剪辑场景表现优异
+### 🎯 超轻量优化 (v0.2.2)
+- **Tkinter 界面** - 使用 Python 标准库，无需额外 GUI 框架
+- **体积再减 70%** - 从 v0.2.1 的 94-182MB 减到 25-50MB
+- **零外部 GUI 依赖** - PyQt6 (256MB) 已移除
+- **启动更快** - 原生标准库，加载速度更快
+- **跨平台兼容** - Python 自带 Tkinter，无需额外安装
+
+### 🎯 体积优化历程
+- **v0.2.0** → **v0.2.1**: 移除 PyTorch (1.7GB)，减少 45-50%
+- **v0.2.1** → **v0.2.2**: 移除 PyQt6 (256MB)，再减 70%
+- **总优化**: 从 239MB → **35MB**，减少 **85%**！
 
 ### AI 增强检测 (v0.2.0)
 - **语音活动检测 (VAD)** - 使用 WebRTC VAD，精确检测真实说话
@@ -207,7 +218,7 @@ scripts\build_local.bat
 - **关键帧提取** - 基于运动强度，识别重要画面
 
 ### 使用方法
-在"AI 增强"标签页中启用相应功能：
+在界面中启用相应功能：
 - VAD 检测：轻量级 WebRTC 实现，无需额外下载
 - 场景分割：无需额外依赖
 - 人脸检测：需要 OpenCV（自动安装）

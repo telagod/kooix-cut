@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2025-11-12
+
+### 🎯 超轻量优化 - 再减 70%！
+- **使用 Tkinter 替代 PyQt6**
+  - 移除 PyQt6 (256MB) GUI 框架
+  - 使用 Python 标准库 Tkinter
+  - Windows: 124MB → **~35MB** (再减 72%)
+  - macOS: 94MB → **~25MB** (再减 73%)
+  - Linux: 182MB → **~50MB** (再减 73%)
+
+### 总体积优化成果
+- **从 v0.2.0 到 v0.2.2**: 239MB → **35MB**
+- **总减少**: **85%**！
+- **优化历程**:
+  - v0.2.0 → v0.2.1: 移除 PyTorch (-1.7GB)
+  - v0.2.1 → v0.2.2: 移除 PyQt6 (-256MB)
+
+### Changed
+- 🎨 **全新 Tkinter 界面** - 保持现代设计风格
+  - 深色主题
+  - 卡片式布局
+  - 完整的设置面板
+  - AI 增强功能支持
+- 📦 **依赖简化**
+  - 移除: PyQt6>=6.6.0
+  - 保留: 仅标准库 + 核心依赖
+- ⚡ **启动速度** - 更快的界面加载
+- 🔧 **零外部 GUI 依赖** - Tkinter 是 Python 标准库
+
+### Technical Details
+- 入口点更改: modern_gui.py → tk_gui.py
+- Linux DEB 依赖: python3-pyqt6 → python3-tk
+- 完全兼容 v0.2.1 的所有功能
+
 ## [0.2.1] - 2025-11-12
 
 ### 🎯 体积优化
