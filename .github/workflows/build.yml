@@ -101,9 +101,11 @@ jobs:
 
       - name: Create AppImage
         run: |
+          # 复制图标文件以匹配desktop文件中的Icon字段
+          cp assets/icon.png assets/kooix-cut.png
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage
-          ./linuxdeploy-x86_64.AppImage --appdir AppDir --executable dist/KOOI-Cut --desktop-file assets/kooix-cut.desktop --icon-file assets/icon.png --output appimage
+          ./linuxdeploy-x86_64.AppImage --appdir AppDir --executable dist/KOOI-Cut --desktop-file assets/kooix-cut.desktop --icon-file assets/kooix-cut.png --output appimage
 
       - name: Build DEB package
         run: |
