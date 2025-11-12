@@ -25,9 +25,35 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
 
+      - name: Install UPX (for compression)
+        run: |
+          choco install upx -y
+
       - name: Build Windows executable
         run: |
-          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.ico --add-data="assets;assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
+          pyinstaller --name="KOOI-Cut" --windowed --onefile ^
+            --icon=assets/icon.ico ^
+            --add-data="assets;assets" ^
+            --copy-metadata imageio ^
+            --copy-metadata moviepy ^
+            --copy-metadata numpy ^
+            --exclude-module PySide2 ^
+            --exclude-module PySide6 ^
+            --exclude-module PyQt5 ^
+            --exclude-module PyQt6.QtWebEngine ^
+            --exclude-module PyQt6.QtTest ^
+            --exclude-module PyQt6.QtBluetooth ^
+            --exclude-module PyQt6.QtNfc ^
+            --exclude-module PyQt6.QtPositioning ^
+            --exclude-module PyQt6.QtSensors ^
+            --exclude-module PyQt6.Qt3D ^
+            --exclude-module PyQt6.QtQuick ^
+            --exclude-module PyQt6.QtQml ^
+            --exclude-module matplotlib ^
+            --exclude-module scipy ^
+            --exclude-module pandas ^
+            --exclude-module PIL.ImageQt ^
+            modern_gui.py
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -50,9 +76,35 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
 
+      - name: Install UPX (for compression)
+        run: |
+          brew install upx
+
       - name: Build macOS app
         run: |
-          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.icns --add-data="assets:assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
+          pyinstaller --name="KOOI-Cut" --windowed --onefile \
+            --icon=assets/icon.icns \
+            --add-data="assets:assets" \
+            --copy-metadata imageio \
+            --copy-metadata moviepy \
+            --copy-metadata numpy \
+            --exclude-module PySide2 \
+            --exclude-module PySide6 \
+            --exclude-module PyQt5 \
+            --exclude-module PyQt6.QtWebEngine \
+            --exclude-module PyQt6.QtTest \
+            --exclude-module PyQt6.QtBluetooth \
+            --exclude-module PyQt6.QtNfc \
+            --exclude-module PyQt6.QtPositioning \
+            --exclude-module PyQt6.QtSensors \
+            --exclude-module PyQt6.Qt3D \
+            --exclude-module PyQt6.QtQuick \
+            --exclude-module PyQt6.QtQml \
+            --exclude-module matplotlib \
+            --exclude-module scipy \
+            --exclude-module pandas \
+            --exclude-module PIL.ImageQt \
+            modern_gui.py
 
       - name: Create DMG
         run: |
@@ -87,13 +139,34 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y dpkg-dev fakeroot python3-tk
+          sudo apt-get install -y dpkg-dev fakeroot python3-pyqt6 upx-ucl
           pip install pyinstaller
           pip install -r requirements.txt
 
       - name: Build Linux executable
         run: |
-          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
+          pyinstaller --name="KOOI-Cut" --onefile \
+            --add-data="assets:assets" \
+            --copy-metadata imageio \
+            --copy-metadata moviepy \
+            --copy-metadata numpy \
+            --exclude-module PySide2 \
+            --exclude-module PySide6 \
+            --exclude-module PyQt5 \
+            --exclude-module PyQt6.QtWebEngine \
+            --exclude-module PyQt6.QtTest \
+            --exclude-module PyQt6.QtBluetooth \
+            --exclude-module PyQt6.QtNfc \
+            --exclude-module PyQt6.QtPositioning \
+            --exclude-module PyQt6.QtSensors \
+            --exclude-module PyQt6.Qt3D \
+            --exclude-module PyQt6.QtQuick \
+            --exclude-module PyQt6.QtQml \
+            --exclude-module matplotlib \
+            --exclude-module scipy \
+            --exclude-module pandas \
+            --exclude-module PIL.ImageQt \
+            modern_gui.py
 
       - name: Create AppImage
         run: |
@@ -105,29 +178,29 @@ jobs:
 
       - name: Build DEB package
         run: |
-          mkdir -p kooix-cut_0.2.3/DEBIAN
-          mkdir -p kooix-cut_0.2.3/usr/bin
-          mkdir -p kooix-cut_0.2.3/usr/share/applications
-          mkdir -p kooix-cut_0.2.3/usr/share/icons/hicolor/512x512/apps
+          mkdir -p kooix-cut_0.2.4/DEBIAN
+          mkdir -p kooix-cut_0.2.4/usr/bin
+          mkdir -p kooix-cut_0.2.4/usr/share/applications
+          mkdir -p kooix-cut_0.2.4/usr/share/icons/hicolor/512x512/apps
 
-          cp dist/KOOI-Cut kooix-cut_0.2.3/usr/bin/
-          cp assets/kooix-cut.desktop kooix-cut_0.2.3/usr/share/applications/
-          cp assets/icon.png kooix-cut_0.2.3/usr/share/icons/hicolor/512x512/apps/kooix-cut.png
+          cp dist/KOOI-Cut kooix-cut_0.2.4/usr/bin/
+          cp assets/kooix-cut.desktop kooix-cut_0.2.4/usr/share/applications/
+          cp assets/icon.png kooix-cut_0.2.4/usr/share/icons/hicolor/512x512/apps/kooix-cut.png
 
-          cat > kooix-cut_0.2.3/DEBIAN/control << EOF
+          cat > kooix-cut_0.2.4/DEBIAN/control << EOF
           Package: kooix-cut
-          Version: 0.2.3
+          Version: 0.2.4
           Section: video
           Priority: optional
           Architecture: amd64
-          Depends: python3, python3-tk
+          Depends: python3, python3-pyqt6
           Maintainer: KOOI <kooi@example.com>
           Description: 智能视频剪辑预处理工具
            自动合并视频并删除静音片段，支持 AI 增强检测。
           EOF
 
-          chmod 755 kooix-cut_0.2.3/usr/bin/KOOI-Cut
-          dpkg-deb --build kooix-cut_0.2.3
+          chmod 755 kooix-cut_0.2.4/usr/bin/KOOI-Cut
+          dpkg-deb --build kooix-cut_0.2.4
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
@@ -135,7 +208,7 @@ jobs:
           name: KOOI-Cut-Linux
           path: |
             KOOI_Cut-x86_64.AppImage
-            kooix-cut_0.2.3.deb
+            kooix-cut_0.2.4.deb
 
   release:
     needs: [build-windows, build-macos, build-linux]
@@ -154,7 +227,7 @@ jobs:
             KOOI-Cut-Windows/KOOI-Cut.exe
             KOOI-Cut-macOS/KOOI-Cut.dmg
             KOOI-Cut-Linux/KOOI_Cut-x86_64.AppImage
-            KOOI-Cut-Linux/kooix-cut_0.2.3.deb
+            KOOI-Cut-Linux/kooix-cut_0.2.4.deb
           draft: false
           prerelease: false
         env:

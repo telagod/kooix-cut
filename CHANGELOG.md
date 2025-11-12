@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.4] - 2025-11-12
+
+### 🎨 GUI 回归与体积优化
+
+**GUI 变更**：
+- ✅ 回到 PyQt6 现代化界面（Material Design 风格）
+- ❌ 移除 CustomTkinter（Linux 显示问题）
+- ✅ 保持专业的用户体验
+
+**体积优化**（通过 PyInstaller + UPX）：
+- ✅ 安装 UPX 压缩工具（20-50% 体积减少）
+- ✅ 排除未使用的 Qt 模块（WebEngine, Test, Bluetooth, NFC, Positioning, Sensors, 3D, Quick, Qml）
+- ✅ 排除其他 Qt 绑定（PySide2, PySide6, PyQt5）
+- ✅ 排除未使用的 Python 库（matplotlib, scipy, pandas, PIL.ImageQt）
+
+**预期效果**：
+- Windows: ~35-48MB（从 96MB 减少 50-60%）
+- macOS: ~25-37MB（从 74MB 减少 50-60%）
+- Linux: ~50-69MB（从 137MB 减少 50-60%）
+
+### Technical Details
+- UPX 压缩减少可执行文件体积
+- 模块排除避免打包不需要的依赖
+- 保持所有 AI 增强功能不变
+
 ## [0.2.3] - 2025-11-12
 
 ### 🐛 重要修复 - 修复无法启动问题

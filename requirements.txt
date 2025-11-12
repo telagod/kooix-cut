@@ -2,3 +2,4 @@ moviepy>=1.0.3
 numpy>=1.24.0
 opencv-python>=4.8.0
 webrtcvad>=2.0.10
+PyQt6>=6.6.0

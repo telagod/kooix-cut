@@ -1,6 +1,6 @@
 [project]
 name = "kooix-cut"
-version = "0.2.3"
+version = "0.2.4"
 description = "视频剪辑预处理工具 - 自动合并和删除静音片段"
 requires-python = ">=3.10"
 dependencies = [
@@ -8,11 +8,11 @@ dependencies = [
     "numpy>=1.24.0",
     "opencv-python>=4.8.0",
     "webrtcvad>=2.0.10",
+    "PyQt6>=6.6.0",
 ]
 
 [project.scripts]
-kooix-cut = "tk_gui:main"
+kooix-cut = "modern_gui:main"
 kooix-cut-classic = "gui:main"
-kooix-cut-modern = "modern_gui:main"
 
 
