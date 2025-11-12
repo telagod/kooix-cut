@@ -6,6 +6,9 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -131,13 +134,15 @@ jobs:
         with:
           name: KOOI-Cut-Linux
           path: |
-            KOOI-Cut*.AppImage
+            KOOI_Cut-x86_64.AppImage
             kooix-cut_0.2.2.deb
 
   release:
     needs: [build-windows, build-macos, build-linux]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -148,7 +153,7 @@ jobs:
           files: |
             KOOI-Cut-Windows/KOOI-Cut.exe
             KOOI-Cut-macOS/KOOI-Cut.dmg
-            KOOI-Cut-Linux/KOOI-Cut*.AppImage
+            KOOI-Cut-Linux/KOOI_Cut-x86_64.AppImage
             KOOI-Cut-Linux/kooix-cut_0.2.2.deb
           draft: false
           prerelease: false
