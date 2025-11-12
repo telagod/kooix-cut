@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Windows executable
         run: |
-          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.ico --add-data="assets;assets" tk_gui.py
+          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.ico --add-data="assets;assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -52,7 +52,7 @@ jobs:
 
       - name: Build macOS app
         run: |
-          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.icns --add-data="assets:assets" tk_gui.py
+          pyinstaller --name="KOOI-Cut" --windowed --onefile --icon=assets/icon.icns --add-data="assets:assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
 
       - name: Create DMG
         run: |
@@ -93,7 +93,7 @@ jobs:
 
       - name: Build Linux executable
         run: |
-          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" tk_gui.py
+          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" --copy-metadata imageio --copy-metadata moviepy --copy-metadata numpy tk_gui.py
 
       - name: Create AppImage
         run: |
