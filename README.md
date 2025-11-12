@@ -24,6 +24,7 @@
 - 🎯 **智能检测** - 自动识别并删除无音频和长段背景音片段
 - ⚙️ **参数可调** - 静音阈值、最小时长、输出路径均可自定义
 - 📊 **实时进度** - 进度条和状态显示，处理过程一目了然
+- ✨ **增强界面** - 文件详情、统计面板、批量操作、快捷键支持
 
 ## 快速开始
 
@@ -171,10 +172,14 @@ Made with ❤️ by KOOI
 - [macOS (.dmg)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/KOOI-Cut.dmg) - PyQt6 优化版
 - [Linux (.deb)](https://github.com/telagod/kooix-cut/releases/download/v0.2.4/kooix-cut_0.2.4.deb) - PyQt6 优化版
 
-**v0.2.4 更新：回到 PyQt6 + 体积优化** 🎨
+**v0.2.4 更新：界面大幅增强 + PyQt6 优化** 🎨
+- ✨ **文件详情展示** - 显示大小、格式等信息
+- 📊 **统计面板** - 实时显示文件统计
+- 🎛️ **批量操作** - 全选、清空、删除选中
+- ⌨️ **快捷键支持** - Ctrl+O 打开、Ctrl+A 全选、Delete 删除、Ctrl+R 处理
+- 🎨 **视觉反馈增强** - 拖拽高亮、悬停效果
 - ✅ 回到 PyQt6 现代化界面（Material Design 风格）
 - ✅ UPX 压缩 + 模块排除优化
-- ✅ 预期体积减少 50-60%（Windows ~35-48MB, macOS ~25-37MB, Linux ~50-69MB）
 - ✅ 保持所有 AI 增强功能
 
 **v0.2.2 更新：再减小 20-25%！使用 Tkinter 替代 PyQt6**

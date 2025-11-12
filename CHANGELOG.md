@@ -4,7 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.4] - 2025-11-12
 
-### 🎨 GUI 回归与体积优化
+### 🎨 界面大幅增强 + GUI 回归
+
+**界面增强（增强版）**：
+- ✨ **文件详情展示** - 显示文件大小、格式、类型等详细信息
+- 📊 **统计面板** - 实时显示文件数量、总大小、平均大小
+- 🎛️ **批量操作** - 全选、清空、删除选中等批量管理功能
+- ⌨️ **快捷键支持** - Ctrl+O 打开、Ctrl+A 全选、Delete 删除、Ctrl+R 处理
+- 🎨 **视觉反馈增强** - 拖拽高亮、悬停效果、状态提示
+- 📂 **文件选择按钮** - 支持按钮和拖拽两种方式
+- 💬 **完成提示** - 处理完成后弹窗通知
+- 🔍 **更大的窗口** - 1400x900 提供更好的视野
 
 **GUI 变更**：
 - ✅ 回到 PyQt6 现代化界面（Material Design 风格）
@@ -12,20 +22,22 @@ All notable changes to this project will be documented in this file.
 - ✅ 保持专业的用户体验
 
 **体积优化**（通过 PyInstaller + UPX）：
-- ✅ 安装 UPX 压缩工具（20-50% 体积减少）
+- ✅ 安装 UPX 压缩工具
 - ✅ 排除未使用的 Qt 模块（WebEngine, Test, Bluetooth, NFC, Positioning, Sensors, 3D, Quick, Qml）
 - ✅ 排除其他 Qt 绑定（PySide2, PySide6, PyQt5）
 - ✅ 排除未使用的 Python 库（matplotlib, scipy, pandas, PIL.ImageQt）
 
-**预期效果**：
-- Windows: ~35-48MB（从 96MB 减少 50-60%）
-- macOS: ~25-37MB（从 74MB 减少 50-60%）
-- Linux: ~50-69MB（从 137MB 减少 50-60%）
+**实际体积**：
+- Windows: 95MB
+- macOS: 93MB
+- Linux: 181MB (DEB) / 183MB (AppImage)
 
 ### Technical Details
-- UPX 压缩减少可执行文件体积
-- 模块排除避免打包不需要的依赖
-- 保持所有 AI 增强功能不变
+- 自定义 FileListItem 组件显示丰富信息
+- StatsCard 组件实时统计
+- QShortcut 实现快捷键
+- QMessageBox 用户确认和提示
+- ExtendedSelection 支持多选操作
 
 ## [0.2.3] - 2025-11-12
 
