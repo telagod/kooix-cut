@@ -1,30 +1,35 @@
 #!/usr/bin/env python3
 """AI 增强检测模块 - VAD, 场景分割, 人脸检测, 关键帧"""
 import numpy as np
-import torch
+try:
+    import webrtcvad
+    WEBRTC_AVAILABLE = True
+except ImportError:
+    WEBRTC_AVAILABLE = False
 
 
 class VADDetector:
-    """语音活动检测（使用 Silero VAD）"""
+    """语音活动检测（使用 WebRTC VAD）"""
 
     def __init__(self):
-        self.model = None
+        self.vad = None
         self.sample_rate = 16000
+        self.frame_duration = 30  # ms (10, 20, 或 30)
 
     def load_model(self):
-        """加载 Silero VAD 模型"""
-        if self.model is None:
+        """初始化 WebRTC VAD"""
+        if not WEBRTC_AVAILABLE:
+            print("WebRTC VAD 未安装，请运行: pip install webrtcvad")
+            return False
+
+        if self.vad is None:
             try:
-                self.model, utils = torch.hub.load(
-                    repo_or_dir='snakers4/silero-vad',
-                    model='silero_vad',
-                    force_reload=False,
-                    onnx=False
-                )
-                self.model.eval()
+                self.vad = webrtcvad.Vad(2)  # 模式 2 (0-3, 3最激进)
             except Exception as e:
-                print(f"VAD 模型加载失败: {e}")
-                self.model = None
+                print(f"VAD 初始化失败: {e}")
+                self.vad = None
+                return False
+        return True
 
     def detect_speech(self, clip, min_duration=1.0, padding=0.3):
         """检测语音片段
@@ -40,9 +45,8 @@ class VADDetector:
         if not clip.audio:
             return []
 
-        self.load_model()
-        if self.model is None:
-            return []  # 模型加载失败，返回空
+        if not self.load_model():
+            return []  # VAD 初始化失败
 
         # 提取音频并重采样到 16kHz
         audio = clip.audio
@@ -50,33 +54,36 @@ class VADDetector:
         if len(samples.shape) > 1:
             samples = np.mean(samples, axis=1)
 
-        # 转换为 torch tensor
-        audio_tensor = torch.from_numpy(samples).float()
+        # 转换为 16-bit PCM
+        samples = (samples * 32767).astype(np.int16)
 
-        # VAD 检测（分块处理）
-        chunk_size = self.sample_rate * 30  # 30秒一块
-        speech_probs = []
+        # VAD 检测（逐帧处理）
+        frame_length = int(self.sample_rate * self.frame_duration / 1000)
+        num_frames = len(samples) // frame_length
+        speech_frames = []
 
-        for i in range(0, len(audio_tensor), chunk_size):
-            chunk = audio_tensor[i:i + chunk_size]
-            if len(chunk) < 512:  # 太短跳过
-                continue
+        for i in range(num_frames):
+            start_idx = i * frame_length
+            end_idx = start_idx + frame_length
+            frame = samples[start_idx:end_idx].tobytes()
 
-            with torch.no_grad():
-                prob = self.model(chunk, self.sample_rate).item()
-                speech_probs.append(prob)
+            try:
+                is_speech = self.vad.is_speech(frame, self.sample_rate)
+                speech_frames.append(is_speech)
+            except Exception:
+                speech_frames.append(False)
 
-        if not speech_probs:
+        if not speech_frames:
             return []
 
         # 转换为时间片段
-        window_duration = chunk_size / self.sample_rate
-        is_speech = np.array(speech_probs) > 0.5
+        frame_duration_sec = self.frame_duration / 1000.0
+        is_speech = np.array(speech_frames)
 
         # 找到变化点
         changes = np.diff(np.concatenate([[False], is_speech, [False]]).astype(int))
-        starts = np.where(changes == 1)[0] * window_duration
-        ends = np.where(changes == -1)[0] * window_duration
+        starts = np.where(changes == 1)[0] * frame_duration_sec
+        ends = np.where(changes == -1)[0] * frame_duration_sec
 
         # 过滤并添加填充
         segments = []
