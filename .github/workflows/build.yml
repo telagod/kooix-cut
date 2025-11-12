@@ -67,6 +67,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          df -h
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -77,11 +86,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pyqt6 dpkg-dev fakeroot
           pip install pyinstaller
-          pip install -r requirements.txt
+          # 安装CPU版本的PyTorch以节省空间
+          pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+          # 安装其他依赖（排除torch和torchaudio）
+          pip install moviepy numpy opencv-python silero
 
       - name: Build Linux executable
         run: |
-          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" modern_gui.py
+          pyinstaller --name="KOOI-Cut" --onefile --add-data="assets:assets" \
+            --exclude-module torch.distributions \
+            --exclude-module torch.testing \
+            --exclude-module torch.ao \
+            modern_gui.py
 
       - name: Create AppImage
         run: |
