@@ -56,11 +56,6 @@ pyinstaller --name="KOOI-Cut" \
   --exclude-module PIL.ImageQt \
   --exclude-module tkinter \
   --exclude-module unittest \
-  --exclude-module test \
-  --exclude-module email \
-  --exclude-module pydoc \
-  --exclude-module doctest \
-  --exclude-module argparse \
   \
   `# ========== 排除未使用的 OpenCV 模块 ==========` \
   --exclude-module cv2.cuda \

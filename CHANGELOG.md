@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.5] - 2025-11-12
 
+### 🐛 紧急修复 - 修复打包程序无法启动
+
+**问题**：
+- v0.2.5 初始版本打包后的程序启动失败
+- 报错：`ModuleNotFoundError: No module named 'email'`
+- 原因：过度排除了 Python 标准库模块，`pkg_resources` 需要这些模块
+
+**修复**：
+- ✅ 恢复 `email` 模块（pkg_resources 依赖）
+- ✅ 恢复 `test`、`pydoc`、`doctest` 模块（避免依赖问题）
+- ✅ 恢复 `argparse` 模块（多个包依赖）
+- ✅ 更新所有平台构建配置（Windows, macOS, Linux）
+- ✅ 更新本地构建脚本 build_optimized.sh
+
+**影响**：
+- 包体积会稍微增加 2-5MB
+- 但确保程序能够正常启动运行
+
 ### 🎨 专业界面优化 + 国际化 + 构建优化
 
 **界面全面升级**：
