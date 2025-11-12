@@ -8,6 +8,7 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 from kooix_cut import detect_audio_segments
 from moviepy import VideoFileClip, concatenate_videoclips
+from video_sort import sort_files
 
 
 class ProcessThread(QThread):
@@ -364,7 +365,8 @@ class MainWindow(QMainWindow):
                 self.file_list.addItem(Path(path).name)
 
         if self.files:
-            self.files.sort()
+            # 使用智能数字排序（默认）
+            self.files = sort_files(self.files, method='name_natural')
             self.btn.setEnabled(True)
             self.status.setText(f"已添加 {len(self.files)} 个文件")
 

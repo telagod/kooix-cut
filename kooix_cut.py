@@ -3,6 +3,7 @@
 from pathlib import Path
 from moviepy import VideoFileClip, concatenate_videoclips
 import numpy as np
+from video_sort import sort_files
 
 
 def detect_static_scenes(clip, threshold=0.02, min_duration=5.0, sample_interval=1.0):
@@ -86,8 +87,9 @@ def detect_audio_segments(clip, silence_threshold=0.01, min_duration=3.0,
     fps = audio.fps
     duration = clip.duration
 
-    # 智能采样率（平衡速度和质量）
-    target_fps = min(fps, 8000)
+    # 智能采样率（避免MoviePy在低采样率下的bug）
+    # MoviePy在16kHz及以下会导致音频数据损坏
+    target_fps = min(fps, 22050)  # 使用至少22050Hz
     samples = audio.to_soundarray(fps=target_fps)
     if len(samples.shape) > 1:
         samples = np.mean(samples, axis=1)
@@ -112,11 +114,23 @@ def detect_audio_segments(clip, silence_threshold=0.01, min_duration=3.0,
         kernel = np.ones(smoothing) / smoothing
         volumes = np.convolve(volumes, kernel, mode='same')
 
-    # 自适应阈值（如果设置过低，自动调整）
-    if silence_threshold < np.percentile(volumes, 10):
-        adaptive_threshold = np.percentile(volumes, 15)
-    else:
+    # 改进的阈值检测：使用相对差异而非自适应提升
+    # 计算音量的动态范围
+    volume_min = np.percentile(volumes, 5)  # 排除极端安静的片段
+    volume_max = np.percentile(volumes, 95)  # 排除极端响亮的片段
+    volume_range = volume_max - volume_min
+
+    # 如果音量范围很小（整体音量变化不大），使用用户设置的阈值
+    # 否则使用动态阈值：最小音量 + 范围的一定比例
+    if volume_range < silence_threshold * 2:
+        # 音量变化很小，直接用用户阈值
         adaptive_threshold = silence_threshold
+    else:
+        # 音量变化大，用最小音量 + 30% 范围作为阈值
+        # 这样能更好地区分"说话"和"静音/背景音"
+        dynamic_threshold = volume_min + volume_range * 0.3
+        # 但不能低于用户设置的阈值
+        adaptive_threshold = max(silence_threshold, dynamic_threshold)
 
     # 检测有效段
     is_active = volumes > adaptive_threshold
@@ -158,7 +172,12 @@ def process_videos(input_dir, output_file, silence_threshold=0.01, min_duration=
         min_duration: 最小有效片段时长
     """
     input_path = Path(input_dir)
-    video_files = sorted(input_path.glob("*.mp4"))
+    video_files = list(input_path.glob("*.mp4"))
+
+    # 使用智能数字排序
+    video_files = [str(f) for f in video_files]
+    video_files = sort_files(video_files, method='name_natural')
+    video_files = [Path(f) for f in video_files]
 
     if not video_files:
         print("未找到视频文件")

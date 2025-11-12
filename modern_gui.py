@@ -3,11 +3,12 @@
 from pathlib import Path
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
                              QListWidget, QPushButton, QProgressBar, QLabel, QDoubleSpinBox,
-                             QLineEdit, QGridLayout, QComboBox, QFrame,
+                             QLineEdit, QGridLayout, QComboBox, QFrame, QCheckBox,
                              QListWidgetItem, QFileDialog, QMessageBox, QDialog)
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QFont, QKeySequence, QShortcut
 from gui import ProcessThread
+from video_sort import SORT_METHODS, sort_files, get_sort_method_name
 
 
 # 翻译字典
@@ -48,6 +49,15 @@ TRANSLATIONS = {
         'disabled': 'Disabled',
         'enabled': 'Enabled',
         'auto_detect': 'Auto Detect',
+
+        # Sorting
+        'sort_method': 'Sort Method:',
+        'sort_order': 'Sort Order:',
+        'sort_ascending': 'Ascending',
+        'sort_descending': 'Descending',
+        'resort': 'Re-sort',
+        'manual_sort': 'Manual (Drag to reorder)',
+        'drag_hint': 'Drag files to reorder • Delete to remove • Ctrl+R to process',
     },
     'zh': {
         'app_title': 'KOOI Cut',
@@ -85,6 +95,15 @@ TRANSLATIONS = {
         'disabled': '禁用',
         'enabled': '启用',
         'auto_detect': '自动检测',
+
+        # Sorting
+        'sort_method': '排序方式:',
+        'sort_order': '排序顺序:',
+        'sort_ascending': '升序',
+        'sort_descending': '降序',
+        'resort': '重新排序',
+        'manual_sort': '手动排序（拖拽调整）',
+        'drag_hint': '拖拽文件调整顺序 • Delete 删除 • Ctrl+R 处理',
     }
 }
 
@@ -264,6 +283,18 @@ class SettingsDialog(QDialog):
         self.preset.setCurrentText("fast")
         adv_grid.addWidget(self.preset, 1, 1)
 
+        # 排序方式
+        self.sort_method_label = QLabel()
+        adv_grid.addWidget(self.sort_method_label, 2, 0)
+        self.sort_method = QComboBox()
+        adv_grid.addWidget(self.sort_method, 2, 1)
+
+        # 排序顺序
+        self.sort_order_label = QLabel()
+        adv_grid.addWidget(self.sort_order_label, 3, 0)
+        self.sort_reverse = QCheckBox()
+        adv_grid.addWidget(self.sort_reverse, 3, 1)
+
         layout.addLayout(adv_grid)
 
         layout.addStretch()
@@ -304,6 +335,8 @@ class SettingsDialog(QDialog):
         self.adv_title.setText(t['advanced_settings'])
         self.encoder_label.setText(t['encoder'])
         self.preset_label.setText(t['preset'])
+        self.sort_method_label.setText(t['sort_method'])
+        self.sort_order_label.setText(t['sort_descending'])
 
         self.cancel_btn.setText(t['cancel'])
         self.ok_btn.setText(t['apply'])
@@ -324,6 +357,25 @@ class SettingsDialog(QDialog):
         else:
             self.codec.addItems(["libx264 (CPU)", t['auto_detect'], "h264_nvenc (GPU)"])
 
+        # 更新排序方法
+        current_sort = self.sort_method.currentData()
+        self.sort_method.clear()
+        for method_id, method_info in SORT_METHODS.items():
+            name_key = f'name_{lang}'
+            display_name = method_info.get(name_key, method_info['name_zh'])
+            self.sort_method.addItem(display_name, method_id)
+
+        # 恢复之前的选择或默认选择
+        if current_sort:
+            idx = self.sort_method.findData(current_sort)
+            if idx >= 0:
+                self.sort_method.setCurrentIndex(idx)
+        else:
+            # 默认选择智能数字排序
+            idx = self.sort_method.findData('name_natural')
+            if idx >= 0:
+                self.sort_method.setCurrentIndex(idx)
+
     def get_config(self):
         """获取配置"""
         t = TRANSLATIONS[self.lang]
@@ -336,6 +388,8 @@ class SettingsDialog(QDialog):
             'enable_face': self.enable_face.currentText() == t['enabled'],
             'codec': self.codec.currentText(),
             'preset': self.preset.currentText(),
+            'sort_method': self.sort_method.currentData(),
+            'sort_reverse': self.sort_reverse.isChecked(),
         }
 
     def set_output_file(self, path):
@@ -418,6 +472,18 @@ class ModernMainWindow(QMainWindow):
                 color: #4CAF50;
                 background: #0f0f0f;
             }
+            QPushButton#resortButton {
+                background: transparent;
+                border: 1px solid #2a2a2a;
+                color: #888888;
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+            QPushButton#resortButton:hover {
+                background: #1a1a1a;
+                border: 1px solid #4CAF50;
+                color: #4CAF50;
+            }
             QListWidget {
                 background: #0d0d0d;
                 border: none;
@@ -425,6 +491,7 @@ class ModernMainWindow(QMainWindow):
                 border-bottom: 1px solid #1a1a1a;
                 padding: 4px 0px;
                 outline: none;
+                show-decoration-selected: 1;
             }
             QListWidget::item {
                 background: transparent;
@@ -437,6 +504,10 @@ class ModernMainWindow(QMainWindow):
             }
             QListWidget::item:hover:!selected {
                 background: #111111;
+            }
+            QListWidget::item:drag {
+                background: #2a2a2a;
+                border: 1px dashed #4CAF50;
             }
             QProgressBar {
                 background: #1a1a1a;
@@ -513,7 +584,22 @@ class ModernMainWindow(QMainWindow):
         # 文件列表
         self.file_list = QListWidget()
         self.file_list.setSelectionMode(QListWidget.SelectionMode.ExtendedSelection)
+
+        # 启用拖拽排序
+        self.file_list.setDragDropMode(QListWidget.DragDropMode.InternalMove)
+        self.file_list.setDefaultDropAction(Qt.DropAction.MoveAction)
+
+        # 连接拖拽完成信号
+        self.file_list.model().rowsMoved.connect(self.on_rows_moved)
+
         main_layout.addWidget(self.file_list, 1)
+
+        # 重新排序按钮
+        self.resort_btn = QPushButton()
+        self.resort_btn.setObjectName("resortButton")
+        self.resort_btn.setMinimumHeight(32)
+        self.resort_btn.clicked.connect(self.resort_files)
+        main_layout.addWidget(self.resort_btn)
 
         # 开始按钮
         self.btn = QPushButton()
@@ -528,6 +614,12 @@ class ModernMainWindow(QMainWindow):
         self.progress.setMaximumHeight(3)
         self.progress.setTextVisible(False)
         main_layout.addWidget(self.progress)
+
+        # 拖拽提示
+        self.drag_hint = QLabel()
+        self.drag_hint.setStyleSheet("color: #555555; font-size: 10px; padding: 4px 0px; font-style: italic;")
+        self.drag_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(self.drag_hint)
 
         # 状态
         self.status = QLabel()
@@ -569,6 +661,8 @@ class ModernMainWindow(QMainWindow):
         self.settings_btn.setText(t['settings'])
         self.select_btn.setText(t['drop_files'])
         self.list_title.setText(t['files'])
+        self.resort_btn.setText(t['resort'])
+        self.drag_hint.setText(t['drag_hint'])
 
         # 更新按钮文本
         if self.btn.isEnabled():
@@ -613,11 +707,11 @@ class ModernMainWindow(QMainWindow):
         for file in files:
             if file not in self.files and Path(file).suffix.lower() in ['.mp4', '.avi', '.mov', '.mkv']:
                 self.files.append(file)
-                item = QListWidgetItem(Path(file).name)
-                self.file_list.addItem(item)
 
         if self.files:
-            self.files.sort()
+            # 使用配置的排序方法
+            self.sort_files()
+            self.refresh_file_list()
             self.btn.setEnabled(True)
             self.btn.setText(t['start_processing'])
             self.status.setText(t['files_selected'].format(len(self.files)))
@@ -627,6 +721,57 @@ class ModernMainWindow(QMainWindow):
             output_name = f"cut-{last_file.name}"
             output_path = last_file.parent / output_name
             self.settings_dialog.set_output_file(str(output_path))
+
+    def sort_files(self):
+        """根据配置排序文件"""
+        config = self.settings_dialog.get_config()
+        sort_method = config.get('sort_method', 'name_natural')
+        sort_reverse = config.get('sort_reverse', False)
+
+        try:
+            self.files = sort_files(self.files, method=sort_method, reverse=sort_reverse)
+        except Exception as e:
+            print(f"排序失败: {e}")
+            # 降级到简单排序
+            self.files.sort(reverse=sort_reverse)
+
+    def refresh_file_list(self):
+        """刷新文件列表显示"""
+        self.file_list.clear()
+        for file in self.files:
+            item = QListWidgetItem(Path(file).name)
+            self.file_list.addItem(item)
+
+    def resort_files(self):
+        """重新排序文件"""
+        if self.files:
+            self.sort_files()
+            self.refresh_file_list()
+            t = TRANSLATIONS[self.lang]
+            self.status.setText(t['files_selected'].format(len(self.files)))
+
+    def on_rows_moved(self, parent, start, end, destination, row):
+        """拖拽移动行后更新底层文件列表"""
+        # 重建 files 列表以匹配当前 UI 显示顺序
+        new_files = []
+        for i in range(self.file_list.count()):
+            item = self.file_list.item(i)
+            filename = item.text()
+            # 从原 files 列表中找到匹配的完整路径
+            for filepath in self.files:
+                if Path(filepath).name == filename:
+                    new_files.append(filepath)
+                    break
+
+        self.files = new_files
+
+        # 拖拽后自动切换到手动排序模式
+        config = self.settings_dialog.get_config()
+        if config.get('sort_method') != 'manual':
+            # 自动切换到手动模式
+            idx = self.settings_dialog.sort_method.findData('manual')
+            if idx >= 0:
+                self.settings_dialog.sort_method.setCurrentIndex(idx)
 
     def remove_selected(self):
         """删除选中的文件"""

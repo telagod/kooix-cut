@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-0.2.5-green.svg)
+![Version](https://img.shields.io/badge/version-0.2.6-green.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -43,9 +43,9 @@
 
 从 [Releases 页面](https://github.com/telagod/kooix-cut/releases/latest) 下载最新版本：
 
-- **Windows** - [KOOI-Cut.exe](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/KOOI-Cut.exe)
-- **macOS** - [KOOI-Cut.dmg](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/KOOI-Cut.dmg)
-- **Linux** - [kooix-cut.deb](https://github.com/telagod/kooix-cut/releases/download/v0.2.5/kooix-cut_0.2.5.deb)
+- **Windows** - [KOOI-Cut.exe](https://github.com/telagod/kooix-cut/releases/download/v0.2.6/KOOI-Cut.exe)
+- **macOS** - [KOOI-Cut.dmg](https://github.com/telagod/kooix-cut/releases/download/v0.2.6/KOOI-Cut.dmg)
+- **Linux** - [kooix-cut.deb](https://github.com/telagod/kooix-cut/releases/download/v0.2.6/kooix-cut_0.2.6.deb)
 
 ### 源码安装
 
@@ -69,7 +69,7 @@ kooix-cut
 ### Linux DEB 安装
 
 ```bash
-sudo dpkg -i kooix-cut_0.2.5.deb
+sudo dpkg -i kooix-cut_0.2.6.deb
 sudo apt-get install -f  # 安装依赖
 kooix-cut  # 运行
 ```
@@ -182,5 +182,5 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 Made with ❤️ by KOOI
 
-**当前版本**: v0.2.5
+**当前版本**: v0.2.6
 **最后更新**: 2025-11-12
