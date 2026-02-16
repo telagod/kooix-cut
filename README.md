@@ -82,6 +82,8 @@ cargo build --release -p kooix-cut-gui
 - [x] Tauri 2.0 液态玻璃 GUI
 - [x] 全平台 CI/CD（Linux / macOS / Windows）
 - [x] 静止画面检测
+- [x] 响应式设计（桌面 / 平板 / 手机）
+- [ ] Tauri 移动端（Android / iOS）
 - [ ] WebRTC VAD 语音活动检测
 - [ ] 场景分割检测
 - [ ] GPU 编码自动检测（NVENC / VideoToolbox）
