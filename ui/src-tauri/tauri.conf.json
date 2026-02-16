@@ -14,6 +14,8 @@
         "title": "Kooix Cut",
         "width": 900,
         "height": 640,
+        "minWidth": 360,
+        "minHeight": 480,
         "resizable": true,
         "decorations": true
       }

@@ -519,3 +519,57 @@ body {
 }
 
 .shake { animation: shake 0.4s ease-in-out; }
+
+/* ===== Responsive ===== */
+
+/* Tablet (≤768px) */
+@media (max-width: 768px) {
+  .main { padding: 14px 16px; gap: 12px; }
+  .toolbar { padding: 12px 16px; }
+  .settings-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: 1; }
+  .drop-zone { padding: 36px 16px; margin: 12px; }
+  .drop-zone-ring { width: 60px; height: 60px; }
+  .drop-zone-ring svg { width: 36px; height: 36px; }
+  .orb-1 { width: 250px; height: 250px; }
+  .orb-2 { width: 200px; height: 200px; }
+  .orb-3 { width: 150px; height: 150px; }
+}
+
+/* Mobile (≤480px) */
+@media (max-width: 480px) {
+  .main { padding: 10px 10px; gap: 10px; }
+  .toolbar { padding: 10px 14px; }
+  .toolbar h1 { font-size: 15px; }
+  .glass-card { border-radius: var(--lg-radius-lg); }
+  .drop-zone { padding: 28px 12px; margin: 10px; }
+  .drop-zone-ring { width: 52px; height: 52px; margin-bottom: 12px; }
+  .drop-zone-ring svg { width: 28px; height: 28px; }
+  .drop-zone-text { font-size: 14px; }
+  .settings-toggle { padding: 12px 14px; font-size: 13px; }
+  .settings-body.open { padding: 0 14px 14px; }
+  .settings-grid { gap: 12px; }
+  .input-wrap { flex-wrap: wrap; }
+  .input-wrap input[type="number"] { width: 100%; }
+  .action-bar { flex-direction: column; padding: 14px; gap: 12px; }
+  .glass-btn.primary { width: 100%; justify-content: center; padding: 12px; }
+  .file-list { max-height: 150px; }
+  .file-item .remove { opacity: 1; }
+  .orb { filter: blur(60px); }
+  .orb-1 { width: 180px; height: 180px; }
+  .orb-2 { width: 150px; height: 150px; }
+  .orb-3 { display: none; }
+}
+
+/* Touch device: always show remove button */
+@media (hover: none) {
+  .file-item .remove { opacity: 1; }
+  .glass-card:hover { transform: none; }
+  .glass-btn:hover { transform: none; }
+}
+
+/* Safe area for notched devices */
+@supports (padding: env(safe-area-inset-top)) {
+  .toolbar { padding-top: calc(12px + env(safe-area-inset-top)); }
+  .main { padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+}
