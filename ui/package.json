@@ -12,6 +12,7 @@
     "@tauri-apps/plugin-shell": "^2"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2",
     "vite": "^6"
   }
 }
