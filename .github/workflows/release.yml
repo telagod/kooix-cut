@@ -97,22 +97,21 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           mkdir -p gui-artifacts
-          find target/release/bundle -name "*.deb" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.deb \;
-          find target/release/bundle -name "*.AppImage" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.AppImage \;
+          find . -name "*.deb" -path "*/bundle/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.deb \;
+          find . -name "*.AppImage" -path "*/bundle/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.AppImage \;
 
       - name: Collect artifacts (macOS)
         if: runner.os == 'macOS'
         run: |
           mkdir -p gui-artifacts
-          find target/release/bundle -name "*.dmg" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.dmg \;
+          find . -name "*.dmg" -path "*/bundle/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.dmg \;
 
       - name: Collect artifacts (Windows)
         if: runner.os == 'Windows'
         shell: bash
         run: |
           mkdir -p gui-artifacts
-          find target/release/bundle -name "*.msi" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.msi \;
-          find target/release/bundle -name "*.exe" -exec cp {} gui-artifacts/ \;
+          find . -name "*.msi" -path "*/bundle/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.msi \;
 
       - uses: actions/upload-artifact@v4
         with:
