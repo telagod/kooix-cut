@@ -1,0 +1,3 @@
+[workspace]
+members = ["crates/kooix-core", "crates/kooix-cli", "ui/src-tauri"]
+resolver = "2"

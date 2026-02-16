@@ -1,0 +1,29 @@
+{
+  "productName": "Kooix Cut",
+  "version": "0.3.0",
+  "identifier": "com.kooix.cut",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Kooix Cut",
+        "width": 900,
+        "height": 640,
+        "resizable": true,
+        "decorations": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "dialog": {},
+    "shell": { "open": true }
+  }
+}

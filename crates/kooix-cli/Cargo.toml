@@ -1,0 +1,14 @@
+[package]
+name = "kooix-cli"
+version = "0.3.0"
+edition = "2021"
+
+[[bin]]
+name = "kooix-cut"
+path = "src/main.rs"
+
+[dependencies]
+kooix-core = { path = "../kooix-core" }
+clap = { version = "4", features = ["derive"] }
+indicatif = "0.17"
+anyhow = "1"

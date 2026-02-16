@@ -1,0 +1,8 @@
+[package]
+name = "kooix-core"
+version = "0.3.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+tempfile = "3"

@@ -1,0 +1,12 @@
+{
+  "identifier": "default",
+  "description": "default capability",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "dialog:default",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "shell:default"
+  ]
+}

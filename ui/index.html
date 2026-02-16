@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kooix Cut</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="toolbar glass-animate-in">
+    <h1>✂️ Kooix Cut</h1>
+    <div class="toolbar-actions">
+      <button class="glass-btn" id="btn-clear">清空</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Drop Zone -->
+    <div class="glass-card glass-animate-in" style="animation-delay:50ms">
+      <div class="drop-zone" id="drop-zone">
+        <div class="drop-zone-icon">📂</div>
+        <div class="drop-zone-text">拖拽视频文件到此处，或点击选择目录</div>
+      </div>
+      <div class="file-count" id="file-count" style="display:none"></div>
+      <ul class="file-list" id="file-list"></ul>
+    </div>
+
+    <!-- Settings -->
+    <div class="glass-card glass-animate-in" style="animation-delay:100ms">
+      <div class="settings-toggle" id="settings-toggle">
+        <span>⚙️ 参数设置</span>
+        <span class="arrow" id="settings-arrow">▼</span>
+      </div>
+      <div class="settings-body" id="settings-body">
+        <div class="settings-grid">
+          <div class="field">
+            <label>静音阈值</label>
+            <input type="number" id="threshold" value="0.01" min="0.001" max="1" step="0.001" />
+          </div>
+          <div class="field">
+            <label>最小时长 (秒)</label>
+            <input type="number" id="min-duration" value="3.0" min="0.5" max="60" step="0.5" />
+          </div>
+          <div class="field">
+            <label>编码器</label>
+            <select id="codec">
+              <option value="libx264">libx264 (CPU)</option>
+              <option value="h264_nvenc">h264_nvenc (NVIDIA GPU)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>编码预设</label>
+            <select id="preset">
+              <option value="ultrafast">ultrafast</option>
+              <option value="fast" selected>fast</option>
+              <option value="medium">medium</option>
+              <option value="slow">slow</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label>输出文件</label>
+            <input type="text" id="output" value="output.mp4" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="glass-card glass-animate-in" style="animation-delay:150ms">
+      <div class="progress-section" id="progress-section">
+        <div class="progress-text" id="progress-text">准备中...</div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+      <div class="status-msg" id="status-msg"></div>
+      <div class="bottom-bar">
+        <button class="glass-btn primary" id="btn-start">开始处理</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
