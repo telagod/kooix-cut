@@ -1,6 +1,5 @@
 # Rust
 /target/
-Cargo.lock
 
 # Node
 ui/node_modules/
@@ -16,8 +15,3 @@ ui/src-tauri/gen/
 # OS
 .DS_Store
 Thumbs.db
-
-# Python legacy
-legacy/.venv/
-legacy/__pycache__/
-*.pyc
