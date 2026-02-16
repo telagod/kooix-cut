@@ -102,7 +102,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+          targets: aarch64-linux-android
 
       - uses: actions/setup-node@v4
         with:
@@ -131,7 +131,7 @@ jobs:
 
       - name: Build Android APK
         working-directory: ui
-        run: npx tauri android build --apk
+        run: npx tauri android build --apk --target aarch64
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
 
