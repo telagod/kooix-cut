@@ -93,6 +93,11 @@ jobs:
         with:
           projectPath: ui
           tauriScript: npx tauri
+          tagName: ${{ github.ref_name }}
+          releaseName: ${{ github.ref_name }}
+          releaseBody: ""
+          releaseDraft: false
+          prerelease: false
 
   build-android:
     runs-on: ubuntu-latest
