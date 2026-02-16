@@ -75,6 +75,21 @@ cargo build --release -p kooix-cut-gui
 └── ui/                # Tauri 2.0 GUI（液态玻璃风格）
 ```
 
+## Roadmap
+
+- [x] Rust 核心引擎（音频检测、视频切割合并）
+- [x] CLI 命令行工具
+- [x] Tauri 2.0 液态玻璃 GUI
+- [x] 全平台 CI/CD（Linux / macOS / Windows）
+- [x] 静止画面检测
+- [ ] WebRTC VAD 语音活动检测
+- [ ] 场景分割检测
+- [ ] GPU 编码自动检测（NVENC / VideoToolbox）
+- [ ] 拖拽文件到 GUI 窗口
+- [ ] 批量处理队列
+- [ ] Tauri 自动更新
+- [ ] 多语言界面（中/英）
+
 ## License
 
 MIT
