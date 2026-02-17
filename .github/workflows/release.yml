@@ -32,6 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sync version from tag
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sed -i.bak "s/^version = \".*\"/version = \"$VERSION\"/" crates/kooix-cli/Cargo.toml crates/kooix-core/Cargo.toml
+          rm -f crates/*/Cargo.toml.bak
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -74,6 +81,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Sync version from tag
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sed -i.bak "s/^version = \".*\"/version = \"$VERSION\"/" crates/kooix-core/Cargo.toml ui/src-tauri/Cargo.toml
+          sed -i.bak "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" ui/src-tauri/tauri.conf.json ui/package.json
+          rm -f crates/*/Cargo.toml.bak ui/src-tauri/Cargo.toml.bak ui/src-tauri/tauri.conf.json.bak ui/package.json.bak
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -138,6 +153,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Sync version from tag
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sed -i "s/^version = \".*\"/version = \"$VERSION\"/" crates/kooix-core/Cargo.toml ui/src-tauri/Cargo.toml
+          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" ui/src-tauri/tauri.conf.json ui/package.json
 
       - uses: dtolnay/rust-toolchain@stable
         with:
