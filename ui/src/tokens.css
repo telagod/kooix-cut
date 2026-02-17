@@ -1,65 +1,91 @@
 /* Liquid Glass Design Tokens */
 :root {
   color-scheme: light dark;
-  --lg-blur-sm: 8px;
-  --lg-blur-md: 16px;
-  --lg-blur-lg: 32px;
-  --lg-blur-xl: 48px;
-  --lg-saturate: 1.8;
-  --lg-radius-sm: 8px;
-  --lg-radius-md: 12px;
-  --lg-radius-lg: 16px;
+
+  /* Blur */
+  --lg-blur-sm: 10px;
+  --lg-blur-md: 24px;
+  --lg-blur-lg: 40px;
+  --lg-blur-xl: 60px;
+  --lg-saturate: 1.9;
+
+  /* Radius */
+  --lg-radius-sm: 10px;
+  --lg-radius-md: 14px;
+  --lg-radius-lg: 18px;
   --lg-radius-xl: 24px;
-  --lg-shadow-subtle: 0 1px 3px rgba(0,0,0,0.08);
-  --lg-shadow-elevated: 0 4px 16px rgba(0,0,0,0.1);
-  --lg-shadow-high: 0 8px 32px rgba(0,0,0,0.15);
+
+  /* Timing */
   --lg-duration-fast: 150ms;
   --lg-duration-normal: 300ms;
   --lg-duration-slow: 500ms;
   --lg-easing-spring: cubic-bezier(0.22, 1, 0.36, 1);
-  --lg-bg-primary: rgba(255,255,255,0.72);
-  --lg-bg-elevated: rgba(255,255,255,0.82);
-  --lg-bg-toolbar: rgba(255,255,255,0.65);
-  --lg-bg-interactive: rgba(255,255,255,0.5);
-  --lg-bg-pressed: rgba(255,255,255,0.35);
-  --lg-bg-scrim: rgba(0,0,0,0.25);
-  --lg-border-color: rgba(255,255,255,0.45);
-  --lg-border-subtle: rgba(0,0,0,0.06);
+
+  /* Light theme (default) */
+  --bg-body: linear-gradient(135deg, #e8ecf5 0%, #d5dce8 30%, #e0d4ec 60%, #dce8e4 100%);
+  --lg-bg-primary: rgba(255,255,255,0.45);
+  --lg-bg-elevated: rgba(255,255,255,0.6);
+  --lg-bg-toolbar: rgba(255,255,255,0.4);
+  --lg-bg-interactive: rgba(255,255,255,0.35);
+  --lg-bg-pressed: rgba(255,255,255,0.2);
+  --lg-bg-scrim: rgba(0,0,0,0.15);
+
+  --lg-border-color: rgba(255,255,255,0.6);
+  --lg-border-subtle: rgba(255,255,255,0.3);
+  --lg-edge-highlight: inset 0 1px 0 rgba(255,255,255,0.7), inset 1px 0 0 rgba(255,255,255,0.4);
+  --lg-edge-shadow: inset 0 -1px 0 rgba(0,0,0,0.04), inset -1px 0 0 rgba(0,0,0,0.02);
+
+  --lg-shadow-subtle: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --lg-shadow-elevated: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --lg-shadow-high: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+
   --text-primary: #1a1a2e;
-  --text-secondary: #555;
-  --accent: linear-gradient(135deg, #667eea, #764ba2);
+  --text-secondary: rgba(26,26,46,0.55);
+  --accent-1: #667eea;
+  --accent-2: #764ba2;
+  --accent: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  --accent-glow: rgba(102, 126, 234, 0.3);
+
+  --orb-1: rgba(102, 126, 234, 0.5);
+  --orb-2: rgba(118, 75, 162, 0.45);
+  --orb-3: rgba(240, 147, 251, 0.3);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --lg-bg-primary: rgba(30,30,30,0.65);
-    --lg-bg-elevated: rgba(40,40,40,0.75);
-    --lg-bg-toolbar: rgba(25,25,25,0.6);
-    --lg-bg-interactive: rgba(255,255,255,0.1);
-    --lg-bg-pressed: rgba(255,255,255,0.06);
-    --lg-bg-scrim: rgba(0,0,0,0.5);
-    --lg-border-color: rgba(255,255,255,0.12);
-    --lg-border-subtle: rgba(255,255,255,0.06);
-    --lg-shadow-subtle: 0 1px 3px rgba(0,0,0,0.3);
-    --lg-shadow-elevated: 0 4px 16px rgba(0,0,0,0.4);
-    --lg-shadow-high: 0 8px 32px rgba(0,0,0,0.5);
-    --text-primary: #e8e8e8;
-    --text-secondary: #aaa;
-  }
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-body: linear-gradient(135deg, #0d0d1a 0%, #141428 30%, #1a1030 60%, #0d1a1a 100%);
+  --lg-bg-primary: rgba(255,255,255,0.06);
+  --lg-bg-elevated: rgba(255,255,255,0.1);
+  --lg-bg-toolbar: rgba(255,255,255,0.05);
+  --lg-bg-interactive: rgba(255,255,255,0.08);
+  --lg-bg-pressed: rgba(255,255,255,0.04);
+  --lg-bg-scrim: rgba(0,0,0,0.5);
+
+  --lg-border-color: rgba(255,255,255,0.12);
+  --lg-border-subtle: rgba(255,255,255,0.06);
+  --lg-edge-highlight: inset 0 1px 0 rgba(255,255,255,0.1), inset 1px 0 0 rgba(255,255,255,0.06);
+  --lg-edge-shadow: inset 0 -1px 0 rgba(0,0,0,0.2), inset -1px 0 0 rgba(0,0,0,0.1);
+
+  --lg-shadow-subtle: 0 2px 8px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --lg-shadow-elevated: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+  --lg-shadow-high: 0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+
+  --text-primary: rgba(255,255,255,0.9);
+  --text-secondary: rgba(255,255,255,0.45);
+  --accent-glow: rgba(102, 126, 234, 0.4);
+
+  --orb-1: rgba(102, 126, 234, 0.35);
+  --orb-2: rgba(118, 75, 162, 0.3);
+  --orb-3: rgba(240, 147, 251, 0.2);
 }
 
 @media (prefers-contrast: high) {
   :root {
-    --lg-bg-primary: rgba(255,255,255,0.95);
-    --lg-bg-elevated: rgba(255,255,255,0.98);
+    --lg-bg-primary: rgba(255,255,255,0.9);
     --lg-border-color: rgba(0,0,0,0.3);
   }
-}
-
-@media (prefers-contrast: high) and (prefers-color-scheme: dark) {
-  :root {
-    --lg-bg-primary: rgba(20,20,20,0.95);
-    --lg-bg-elevated: rgba(25,25,25,0.98);
+  [data-theme="dark"] {
+    --lg-bg-primary: rgba(20,20,20,0.9);
     --lg-border-color: rgba(255,255,255,0.3);
   }
 }

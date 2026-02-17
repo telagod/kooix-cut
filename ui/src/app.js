@@ -2,6 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { open, save } from "@tauri-apps/plugin-dialog";
 
+// --- Theme ---
+const stored = localStorage.getItem("theme");
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+if (stored === "dark" || (!stored && prefersDark)) document.documentElement.dataset.theme = "dark";
+
 let files = [];
 let processing = false;
 
@@ -18,6 +23,13 @@ const $pct = $("#progress-pct");
 const $status = $("#status-msg");
 const $settingsBody = $("#settings-body");
 const $settingsArrow = $("#settings-arrow");
+
+// --- Theme toggle ---
+$("#btn-theme").addEventListener("click", () => {
+  const isDark = document.documentElement.dataset.theme === "dark";
+  document.documentElement.dataset.theme = isDark ? "" : "dark";
+  localStorage.setItem("theme", isDark ? "light" : "dark");
+});
 
 // --- File rendering ---
 function renderFiles() {
