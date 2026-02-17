@@ -9,6 +9,4 @@ path = "src/main.rs"
 
 [dependencies]
 kooix-core = { path = "../kooix-core" }
-clap = { version = "4", features = ["derive"] }
-indicatif = "0.17"
 anyhow = "1"
