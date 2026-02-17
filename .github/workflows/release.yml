@@ -93,6 +93,10 @@ jobs:
         working-directory: ui
         run: npx tauri build
 
+      - name: List bundle output
+        shell: bash
+        run: find . -path "*/bundle/*" -type f | sort
+
       - name: Collect artifacts (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -112,6 +116,7 @@ jobs:
         run: |
           mkdir -p gui-artifacts
           find . -name "*.msi" -path "*/bundle/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}.msi \;
+          find . -name "*.exe" -path "*/bundle/nsis/*" -exec cp {} gui-artifacts/kooix-cut-${{ matrix.suffix }}-setup.exe \;
 
       - uses: actions/upload-artifact@v4
         with:
