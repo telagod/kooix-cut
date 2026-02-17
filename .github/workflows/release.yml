@@ -36,6 +36,10 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: cli-${{ matrix.target }}
+
       - name: Build CLI
         run: cargo build --release --target ${{ matrix.target }} -p kooix-cli
 
@@ -75,9 +79,15 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: gui-${{ matrix.target }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
 
       - name: Install deps (Linux)
         if: runner.os == 'Linux'
@@ -133,9 +143,15 @@ jobs:
         with:
           targets: aarch64-linux-android
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: android-aarch64
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
 
       - uses: actions/setup-java@v4
         with:
